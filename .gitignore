@@ -1,0 +1,53 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+/smarter ai/node_modules
+
+# testing
+/coverage
+/smarter ai/coverage
+
+# next.js
+/.next/
+/out/
+/smarter ai/.next/
+/smarter ai/out/
+
+# production
+/build
+/smarter ai/build
+
+# misc
+.DS_Store
+*.pem
+/smarter ai/.DS_Store
+/smarter ai/*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/smarter ai/npm-debug.log*
+/smarter ai/yarn-debug.log*
+/smarter ai/yarn-error.log*
+
+# local env files
+.env
+.env*.local
+/smarter ai/.env
+/smarter ai/.env*.local
+
+# vercel
+.vercel
+/smarter ai/.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+/smarter ai/*.tsbuildinfo
+/smarter ai/next-env.d.ts
+/recruitmentagent/venv/

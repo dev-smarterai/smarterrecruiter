@@ -1,0 +1,208 @@
+{
+  "jobProgress": [
+    {
+      "jobId": "1",
+      "title": "Junior Software Developer",
+      "role": "Junior Software Developer",
+      "summary": {
+        "totalResumes": 450,
+        "meetingMinCriteria": 150,
+        "shortlisted": 50,
+        "rejected": 300,
+        "biasScore": 90
+      },
+      "topCandidate": {
+        "name": "Alissia Stone",
+        "position": "Frontend Developer",
+        "matchPercentage": 92,
+        "education": "MSc in CS (Stanford)",
+        "location": "Dubai, UAE",
+        "achievements": [
+          "Developed multiple enterprise applications and e-commerce platforms",
+          "Improved React component performance by 30%"
+        ],
+        "skills": ["React", "Next.js", "JavaScript", "TypeScript"],
+        "skillGaps": ["Cloud", "Agile", "Leadership"],
+        "linkedin": "https://linkedin.com/in/alissia"
+      },
+      "skillAnalysis": {
+        "totalScreened": 450,
+        "matchingThreshold": 80,
+        "shortlistedRate": 11,
+        "averageSkillFit": 78
+      },
+      "suggestedQuestions": [
+        "How do you optimize SQL queries for performance?",
+        "Describe your experience with data visualization tools"
+      ],
+      "candidatesPool": {
+        "topSkills": ["Python", "Data Visualization", "SQL", "Machine Learning"],
+        "missingCriteria": ["Cloud Computing", "Deep Learning", "Agile Methodologies"],
+        "learningPaths": [
+          {
+            "title": "Cloud Computing Fundamentals",
+            "provider": "LinkedIn Learning (Framework)"
+          },
+          {
+            "title": "Agile Learning Certificate",
+            "provider": "LinkedIn Learning (Framework)"
+          }
+        ]
+      },
+      "candidates": [
+       ]
+    },
+    {
+      "jobId": "2",
+      "title": "Senior Frontend Developer",
+      "role": "Senior Frontend Developer",
+      "summary": {
+        "totalResumes": 320,
+        "meetingMinCriteria": 120,
+        "shortlisted": 30,
+        "rejected": 170,
+        "biasScore": 87
+      },
+      "topCandidate": {
+        "name": "Sarah Johnson",
+        "position": "UI/UX Designer",
+        "matchPercentage": 96,
+        "education": "BSc in Design (MIT)",
+        "location": "San Francisco, CA",
+        "achievements": [
+          "Designed interfaces for web and mobile applications across various industries",
+          "Created user-centered designs with excellent UX"
+        ],
+        "skills": ["UI Design", "UX Research", "Figma", "Adobe XD"],
+        "skillGaps": ["iOS Development", "WebGL", "Accessibility"],
+        "linkedin": "https://linkedin.com/in/sarahjohnson"
+      },
+      "skillAnalysis": {
+        "totalScreened": 320,
+        "matchingThreshold": 85,
+        "shortlistedRate": 9,
+        "averageSkillFit": 82
+      },
+      "suggestedQuestions": [
+        "Describe your experience with state management in large React applications",
+        "How do you approach component design and reusability?"
+      ],
+      "candidatesPool": {
+        "topSkills": ["React", "JavaScript", "CSS3", "TypeScript"],
+        "missingCriteria": ["Animation", "WebGL", "iOS Development"],
+        "learningPaths": [
+          {
+            "title": "Advanced Animation Techniques for Web",
+            "provider": "Frontend Masters (Framework)"
+          },
+          {
+            "title": "WebGL and Three.js Fundamentals",
+            "provider": "Udemy (Framework)"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "id": "5",
+          "name": "Sarah Johnson",
+          "email": "s.johnson@gmail.com",
+          "matchScore": 96
+        },
+        {
+          "id": "6",
+          "name": "David Smith",
+          "email": "d.smith@gmail.com",
+          "matchScore": 88
+        },
+        {
+          "id": "7",
+          "name": "Megan Brown",
+          "email": "m.brown@gmail.com",
+          "matchScore": 79
+        },
+        {
+          "id": "1",
+          "name": "Alissia Stone",
+          "email": "a.stone@gmail.com",
+          "matchScore": 72
+        }
+      ]
+    },
+    {
+      "jobId": "3",
+      "title": "DevOps Engineer",
+      "role": "DevOps Engineer",
+      "summary": {
+        "totalResumes": 280,
+        "meetingMinCriteria": 95,
+        "shortlisted": 25,
+        "rejected": 160,
+        "biasScore": 92
+      },
+      "topCandidate": {
+        "name": "Thomas Palstein",
+        "position": "DevOps Engineer",
+        "matchPercentage": 90,
+        "education": "MSc in Computer Engineering",
+        "location": "Seattle, WA",
+        "achievements": [
+          "Implemented CI/CD pipelines and infrastructure as code for multiple organizations",
+          "Strong experience in AWS, Docker, and Kubernetes"
+        ],
+        "skills": ["Docker", "Kubernetes", "AWS", "CI/CD"],
+        "skillGaps": [".NET", "Azure", "Security"],
+        "linkedin": "https://linkedin.com/in/thomaspalstein"
+      },
+      "skillAnalysis": {
+        "totalScreened": 280,
+        "matchingThreshold": 75,
+        "shortlistedRate": 9,
+        "averageSkillFit": 71
+      },
+      "suggestedQuestions": [
+        "How do you approach infrastructure as code in large-scale environments?",
+        "Describe your experience with monitoring and observability tools"
+      ],
+      "candidatesPool": {
+        "topSkills": ["Docker", "AWS", "Linux", "Kubernetes"],
+        "missingCriteria": ["Azure", ".NET", "Security Engineering"],
+        "learningPaths": [
+          {
+            "title": "Microsoft Azure Administration",
+            "provider": "Microsoft Learn (Framework)"
+          },
+          {
+            "title": "Cloud Security Engineer Path",
+            "provider": "A Cloud Guru (Framework)"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "id": "2",
+          "name": "Emma Bern",
+          "email": "e.bern@gmail.com",
+          "matchScore": 90
+        },
+        {
+          "id": "4",
+          "name": "Thomas Palstein",
+          "email": "t.palstein@acme.com",
+          "matchScore": 87
+        },
+        {
+          "id": "6",
+          "name": "David Smith",
+          "email": "d.smith@gmail.com",
+          "matchScore": 76
+        },
+        {
+          "id": "3",
+          "name": "Aaron McFlow",
+          "email": "a.flow@acme.com",
+          "matchScore": 65
+        }
+      ]
+    }
+  ]
+} 

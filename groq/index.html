@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groq Realtime Voice Chatbot</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        #chatbox { height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background-color: #fff; border-radius: 5px; }
+        .message { margin-bottom: 10px; padding: 8px 12px; border-radius: 15px; max-width: 70%; line-height: 1.4; }
+        .user-message { background-color: #dcf8c6; align-self: flex-end; margin-left: auto; }
+        .bot-message { background-color: #eee; align-self: flex-start; margin-right: auto; }
+        .transcript-message { background-color: #e6f7ff; align-self: flex-end; margin-left: auto; font-style: italic; color: #555; }
+        #input-area { display: flex; margin-bottom: 10px; }
+        #userInput { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
+        button { padding: 10px 15px; border: none; background-color: #007bff; color: white; cursor: pointer; border-radius: 0; }
+        #sendButton { border-radius: 0 5px 5px 0; }
+        #recordButton { border-radius: 5px 0 0 5px; background-color: #28a745; margin-right: -1px; }
+        #recordButton.recording { background-color: #dc3545; }
+        button:hover { opacity: 0.9; }
+        #status { font-size: 0.9em; color: #666; margin-top: 5px; min-height: 1.2em; }
+        .loading {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #666;
+            animation: pulse 1s infinite ease-in-out alternate;
+            margin-left: 5px;
+        }
+        @keyframes pulse {
+            from { transform: scale(0.8); opacity: 0.5; }
+            to { transform: scale(1.2); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Groq Realtime Voice Chatbot (Llama3 + Arabic TTS)</h1>
+    <div id="chatbox"></div>
+    <div id="input-area">
+        <button id="recordButton">Hold to Record</button>
+        <input type="text" id="userInput" placeholder="Or type here...">
+        <button id="sendButton">Send</button>
+    </div>
+    <div id="status">Connecting...</div>
+    <audio id="audioPlayer" style="display: none;"></audio>
+
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const recordButton = document.getElementById('recordButton');
+        const statusDiv = document.getElementById('status');
+        const audioPlayer = document.getElementById('audioPlayer');
+        let ws;
+        let currentBotMessageDiv = null;
+        let currentAudioQueue = [];
+        let isPlayingAudio = false;
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let audioStream;
+
+        function connectWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}`;
+            ws = new WebSocket(wsUrl);
+            ws.binaryType = "blob";
+
+            ws.onopen = () => {
+                console.log('WebSocket connection established');
+                statusDiv.textContent = 'Connected. Hold Record button to speak.';
+                sendButton.disabled = false;
+                userInput.disabled = false;
+                recordButton.disabled = false;
+            };
+
+            ws.onmessage = (event) => {
+                if (event.data instanceof Blob) {
+                    console.warn("Received unexpected Blob data from server.");
+                    return;
+                }
+                try {
+                    const message = JSON.parse(event.data);
+                    console.log('Message from server:', message);
+
+                    if (message.type === 'chat_chunk' || message.type === 'chat_end' || message.type === 'error') {
+                        const loadingIndicator = statusDiv.querySelector('.loading');
+                        if (loadingIndicator) {
+                            statusDiv.removeChild(loadingIndicator);
+                        }
+                        if (message.type !== 'error') {
+                            statusDiv.textContent = 'Connected. Hold Record button to speak.';
+                        }
+                    }
+
+                    if (message.type === 'user_transcript') {
+                        displayMessage(`You said: ${message.text}`, 'transcript-message');
+                        statusDiv.textContent = 'Bot is thinking...';
+                        addLoadingIndicator();
+                    } else if (message.type === 'chat_chunk') {
+                        if (!currentBotMessageDiv) {
+                            currentBotMessageDiv = createMessageDiv('bot-message');
+                            chatbox.appendChild(currentBotMessageDiv);
+                            chatbox.scrollTop = chatbox.scrollHeight;
+                        }
+                        currentBotMessageDiv.textContent += message.text;
+                        chatbox.scrollTop = chatbox.scrollHeight;
+                    } else if (message.type === 'chat_end') {
+                        currentBotMessageDiv = null;
+                    } else if (message.type === 'tts_audio') {
+                        currentAudioQueue.push(message.audioUrl);
+                        playNextAudio();
+                    } else if (message.type === 'error') {
+                        console.error('Server error:', message.error);
+                        displayMessage(`Server Error: ${message.error}`, 'bot-message error');
+                        statusDiv.textContent = `Error: ${message.error}`;
+                        currentBotMessageDiv = null;
+                    }
+                } catch (error) {
+                    console.error('Failed to parse message or handle update:', error);
+                    displayMessage('Error processing server message.', 'bot-message error');
+                    statusDiv.textContent = 'Error processing server message.';
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                statusDiv.textContent = 'Connection error. Please refresh.';
+                disableInput();
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket connection closed. Attempting to reconnect...');
+                statusDiv.textContent = 'Disconnected. Trying to reconnect...';
+                disableInput();
+                currentBotMessageDiv = null;
+                if (isRecording) stopRecording();
+                if (audioStream) {
+                    audioStream.getTracks().forEach(track => track.stop());
+                    audioStream = null;
+                }
+                setTimeout(connectWebSocket, 5000);
+            };
+        }
+
+        function disableInput(isRecordingRelated = false) {
+            sendButton.disabled = true;
+            userInput.disabled = true;
+            recordButton.disabled = true;
+            if (!isRecordingRelated && ws && ws.readyState === WebSocket.OPEN) {
+                userInput.disabled = false;
+                sendButton.disabled = false;
+                recordButton.disabled = false;
+            }
+        }
+
+        function enableInput() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                sendButton.disabled = false;
+                userInput.disabled = false;
+                recordButton.disabled = false;
+            }
+        }
+
+        function addLoadingIndicator() {
+            if (!statusDiv.querySelector('.loading')) {
+                const loadingIndicator = document.createElement('span');
+                loadingIndicator.classList.add('loading');
+                statusDiv.appendChild(loadingIndicator);
+            }
+        }
+
+        function createMessageDiv(className, text = '') {
+            const div = document.createElement('div');
+            div.classList.add('message', className);
+            div.textContent = text;
+            return div;
+        }
+
+        function displayMessage(text, className) {
+            const messageDiv = createMessageDiv(className, text);
+            chatbox.appendChild(messageDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function sendTextMessage() {
+            const text = userInput.value.trim();
+            if (text && ws && ws.readyState === WebSocket.OPEN) {
+                displayMessage(text, 'user-message');
+                ws.send(JSON.stringify({ type: 'chat_message', text: text }));
+                userInput.value = '';
+                statusDiv.textContent = 'Bot is thinking...';
+                addLoadingIndicator();
+                disableInput(true);
+            } else if (!ws || ws.readyState !== WebSocket.OPEN) {
+                console.error('WebSocket is not connected.');
+                statusDiv.textContent = 'Not connected. Please wait or refresh.';
+            }
+        }
+
+        async function startRecording() {
+            if (isRecording) return;
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('Your browser does not support audio recording.');
+                return;
+            }
+            try {
+                if (!audioStream) {
+                    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                }
+
+                isRecording = true;
+                recordButton.textContent = 'Recording...';
+                recordButton.classList.add('recording');
+                statusDiv.textContent = 'Recording audio... Release button to send.';
+                disableInput(true);
+
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(audioStream);
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    recordButton.textContent = 'Hold to Record';
+                    recordButton.classList.remove('recording');
+                    isRecording = false;
+                    enableInput();
+
+                    if (audioChunks.length === 0) {
+                        console.log("No audio data recorded.");
+                        statusDiv.textContent = 'No audio recorded. Hold Record button to speak.';
+                        return;
+                    }
+
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        statusDiv.textContent = 'Processing audio...';
+                        addLoadingIndicator();
+                        ws.send(audioBlob);
+                        console.log(`Sent audio blob: ${audioBlob.size} bytes, type: ${audioBlob.type}`);
+                    } else {
+                        console.error('WebSocket is not open. Cannot send audio.');
+                        statusDiv.textContent = 'Connection error. Cannot send audio.';
+                    }
+                    audioChunks = [];
+                };
+
+                mediaRecorder.onerror = (event) => {
+                    console.error("MediaRecorder error:", event.error);
+                    statusDiv.textContent = `Recording error: ${event.error.name}`;
+                    recordButton.textContent = 'Hold to Record';
+                    recordButton.classList.remove('recording');
+                    isRecording = false;
+                    enableInput();
+                    audioChunks = [];
+                };
+
+                mediaRecorder.start();
+
+            } catch (err) {
+                console.error('Error accessing microphone:', err);
+                statusDiv.textContent = 'Microphone access denied or error.';
+                alert(`Could not access microphone: ${err.message || err.name}`);
+                isRecording = false;
+                recordButton.textContent = 'Hold to Record';
+                recordButton.classList.remove('recording');
+                enableInput();
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+            isRecording = false;
+        }
+
+        function playNextAudio() {
+            if (isPlayingAudio || currentAudioQueue.length === 0) {
+                return;
+            }
+            isPlayingAudio = true;
+            const audioUrl = currentAudioQueue.shift();
+            console.log('Playing audio:', audioUrl);
+            audioPlayer.src = audioUrl;
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log('Audio playback started.');
+                }).catch(error => {
+                    console.error('Audio playback failed:', error);
+                    isPlayingAudio = false;
+                    setTimeout(playNextAudio, 100);
+                });
+            } else {
+                console.warn("audioPlayer.play() did not return a promise.");
+                isPlayingAudio = false;
+                setTimeout(playNextAudio, 100);
+            }
+        }
+        audioPlayer.onended = () => {
+            console.log('Audio playback finished.');
+            isPlayingAudio = false;
+            if (audioPlayer.src.startsWith('blob:')) {
+                URL.revokeObjectURL(audioPlayer.src);
+                console.log('Revoked Blob URL:', audioPlayer.src);
+            }
+            playNextAudio();
+        };
+        audioPlayer.onerror = (e) => {
+            console.error('Error occurred during audio playback:', e);
+            isPlayingAudio = false;
+            if (audioPlayer.src && audioPlayer.src.startsWith('blob:')) {
+                URL.revokeObjectURL(audioPlayer.src);
+                console.log('Revoked Blob URL after error:', audioPlayer.src);
+            }
+            setTimeout(playNextAudio, 100);
+        };
+
+        sendButton.addEventListener('click', sendTextMessage);
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendTextMessage();
+            }
+        });
+
+        recordButton.addEventListener('mousedown', startRecording);
+        recordButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startRecording();
+        });
+        recordButton.addEventListener('mouseup', stopRecording);
+        recordButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopRecording();
+        });
+        recordButton.addEventListener('mouseleave', () => {
+            if (isRecording) {
+                stopRecording();
+            }
+        });
+
+        disableInput();
+        connectWebSocket();
+
+    </script>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+{
+  "name": "smarter-ai",
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "buildCommand": "pnpm build",
+  "devCommand": "pnpm dev",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
+} 

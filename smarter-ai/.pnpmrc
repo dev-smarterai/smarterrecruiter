@@ -1,0 +1,20 @@
+prefer-offline=true
+strict-peer-dependencies=false
+auto-install-peers=true
+use-node-version=18.19.0
+
+# Skip all integrity checks to speed up builds
+verify-store-integrity=false
+
+# Disable progress bars and other noisy output
+loglevel=error
+
+# Skip typechecking
+node-linker=hoisted
+shamefully-hoist=true
+
+# Disable unnecessary scripts
+ignore-scripts=true
+
+# Skip plugins during build
+enable-pre-post-scripts=false

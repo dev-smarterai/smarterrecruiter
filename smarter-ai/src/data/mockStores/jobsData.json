@@ -1,0 +1,145 @@
+{
+  "jobs": [
+    {
+      "id": "1",
+      "title": "Junior Software Developer",
+      "company": "Google",
+      "companyLogo": "/google-logo.png",
+      "type": "FULL-TIME",
+      "featured": true,
+      "description": {
+        "intro": "Google is looking for a talented and motivated Junior Software Developer to join our dynamic team.",
+        "details": "As a Junior Software Developer, you will work closely with experienced engineers to design, develop, and maintain high-quality software solutions that power Google's products and services. You'll have the opportunity to learn from industry experts, contribute to impactful projects, and grow your technical skills in a collaborative environment.",
+        "responsibilities": "The role will involve assisting in the design, development, testing, and deployment of software applications. Writing clean, efficient, and well-documented code following best practices. Collaborating with cross-functional teams, including product managers, designers, and senior engineers. Debugging and troubleshooting software issues, identifying and implementing solutions. Participating in code reviews to ensure high-quality software development. Staying up to date with the latest industry trends, technologies, and programming languages.",
+        "closing": "Want to work with us? You're in good company!"
+      },
+      "requirements": [
+        "Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent practical experience).",
+        "Proficiency in at least one programming language (e.g., Python, Java, C++, JavaScript, or Go).",
+        "Strong problem-solving and analytical skills.",
+        "Basic understanding of software development life cycle (SDLC) and Agile methodologies.",
+        "Good communication skills and the ability to work in a team environment."
+      ],
+      "desirables": [
+        "Problem-Solving Mindset – Ability to break down complex challenges and find innovative solutions.",
+        "Strong Communication – Ability to explain technical concepts clearly to different audiences.",
+        "Collaboration & Teamwork – Experience working in agile development teams.",
+        "Adaptability & Willingness to Learn – Openness to learning new tools, frameworks, and best practices.",
+        "Attention to Detail – Ability to write clean, efficient, and well-documented code."
+      ],
+      "benefits": [
+        "Competitive Salary – Market-leading compensation for junior developers.",
+        "Annual Performance Bonuses – Additional rewards based on individual and company performance.",
+        "Stock Options (RSUs) – Equity grants to share in Google's success.",
+        "401(k) Plan with Company Match – Retirement savings with company contributions.",
+        "Tuition Reimbursement – Support for further education and professional development."
+      ],
+      "salary": {
+        "min": 100000,
+        "max": 120000,
+        "currency": "USD",
+        "period": "Yearly salary"
+      },
+      "location": "LA, California",
+      "posted": "14 Jun, 2025",
+      "expiry": "14 Aug, 2025",
+      "level": "Entry Level",
+      "experience": "$50k-80k/month",
+      "education": "Graduation"
+    },
+    {
+      "id": "2",
+      "title": "Senior Frontend Developer",
+      "company": "Apple",
+      "companyLogo": "/apple-logo.png",
+      "type": "FULL-TIME",
+      "featured": true,
+      "description": {
+        "intro": "Apple is seeking a skilled Senior Frontend Developer to join our innovative product team.",
+        "details": "As a Senior Frontend Developer at Apple, you will be responsible for building and maintaining high-quality user interfaces for our cutting-edge products and services. You will collaborate with designers, backend engineers, and product managers to deliver exceptional user experiences.",
+        "responsibilities": "Design and implement new user-facing features in Apple's products. Ensure the technical feasibility of UI/UX designs. Optimize applications for maximum speed and scalability. Collaborate with cross-functional teams to define, design, and ship new features. Ensure high code quality through writing unit and integration tests.",
+        "closing": "Join the team that's redefining how people interact with technology!"
+      },
+      "requirements": [
+        "5+ years of experience in frontend development",
+        "Strong proficiency in JavaScript, TypeScript, HTML5, and CSS3",
+        "Experience with React, Vue, or similar modern frameworks",
+        "Understanding of server-side rendering and state management",
+        "Experience with responsive and adaptive design principles"
+      ],
+      "desirables": [
+        "Experience with iOS or macOS application development",
+        "Knowledge of accessibility standards and practices",
+        "Experience with animation and interactive UI elements",
+        "Understanding of design systems and component libraries",
+        "Experience with WebGL or Three.js for 3D visualization"
+      ],
+      "benefits": [
+        "Competitive salary and stock options",
+        "Health and wellness benefits",
+        "Education and professional development stipend",
+        "Employee product discount program",
+        "Relaxed time off policy"
+      ],
+      "salary": {
+        "min": 150000,
+        "max": 180000,
+        "currency": "USD",
+        "period": "Yearly salary"
+      },
+      "location": "Cupertino, CA",
+      "posted": "10 Jun, 2025",
+      "expiry": "10 Aug, 2025",
+      "level": "Senior",
+      "experience": "5+ years",
+      "education": "Bachelor's or equivalent"
+    },
+    {
+      "id": "3",
+      "title": "DevOps Engineer",
+      "company": "Microsoft",
+      "companyLogo": "/microsoft-logo.png",
+      "type": "FULL-TIME",
+      "featured": false,
+      "description": {
+        "intro": "Microsoft is looking for a DevOps Engineer to help us build and maintain our cloud infrastructure.",
+        "details": "As a DevOps Engineer at Microsoft, you will be responsible for designing, implementing, and maintaining our infrastructure as code. You will work with development teams to streamline CI/CD pipelines and ensure reliable deployments.",
+        "responsibilities": "Set up and maintain CI/CD pipelines. Automate infrastructure provisioning using tools like Terraform. Monitor system health and respond to incidents. Optimize cloud resource usage and costs. Implement security best practices across our infrastructure.",
+        "closing": "Help us build the next generation of cloud services!"
+      },
+      "requirements": [
+        "3+ years of experience in a DevOps or SRE role",
+        "Experience with Azure, AWS, or GCP",
+        "Proficiency in at least one scripting language (Python, Bash, PowerShell)",
+        "Experience with infrastructure as code tools (Terraform, CloudFormation)",
+        "Knowledge of containerization technologies (Docker, Kubernetes)"
+      ],
+      "desirables": [
+        "Experience with monitoring and observability tools",
+        "Knowledge of security best practices in cloud environments",
+        "Experience with database administration",
+        "Familiarity with .NET ecosystem",
+        "Experience with large-scale distributed systems"
+      ],
+      "benefits": [
+        "Competitive compensation package",
+        "Comprehensive health benefits",
+        "Retirement plan with company match",
+        "Flexible work arrangements",
+        "Continuous learning opportunities"
+      ],
+      "salary": {
+        "min": 130000,
+        "max": 160000,
+        "currency": "USD",
+        "period": "Yearly salary"
+      },
+      "location": "Redmond, WA",
+      "posted": "5 Jun, 2025",
+      "expiry": "5 Aug, 2025",
+      "level": "Mid-Senior",
+      "experience": "3+ years",
+      "education": "Bachelor's degree"
+    }
+  ]
+} 
