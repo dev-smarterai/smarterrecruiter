@@ -1,53 +1,240 @@
-# Tremor – Dashboard
+# Smarter AI - AI-Powered Recruitment Platform
 
-`Dashboard` is a SaaS application template from [Tremor](https://tremor.so). It's built
-using [`Tremor Raw`](https://raw.tremor.so/docs/getting-started/installation)
-and [Next.js](https://nextjs.org).
+**Smarter AI** is a comprehensive AI-powered recruitment and interview platform built on Next.js. The platform combines multiple AI technologies to streamline the hiring process through intelligent candidate analysis, automated interviews, and real-time communication.
 
-## Getting started
+## 🚀 Features
 
-1. Install the dependencies. We recommend using pnpm. If you want to use `npm`,
-   just replace `pnpm` with `npm`.
+- **AI-Powered Interviews**: Automated interview sessions using OpenAI, Groq, and LiveKit for real-time voice/video interactions
+- **CV Analysis**: Intelligent resume parsing and candidate evaluation using Mistral OCR and OpenAI
+- **Real-time Communication**: WebSocket-based chat and voice interactions with Arabic language support
+- **Candidate Management**: Complete candidate lifecycle management with profile tracking and interview scheduling
+- **Multi-language Support**: Specialized Arabic interview capabilities with TTS/STT integration
+- **Dashboard Analytics**: Comprehensive recruitment analytics and reporting using Tremor components
+
+## 🛠 Technology Stack
+
+### Core Framework
+- **Next.js 14.2.23**: React framework with App Router
+- **React 18.2.0**: UI library
+- **TypeScript 5.8.3**: Primary language
+- **Node.js**: Runtime environment
+- **pnpm**: Package manager (preferred over npm/yarn)
+
+### UI & Styling
+- **Tailwind CSS 3.4.17**: Utility-first CSS framework
+- **Radix UI**: Headless UI primitives
+- **Tremor**: Dashboard components
+- **Lucide React**: Icon library
+- **Framer Motion**: Animation library
+
+### Backend & Database
+- **Convex**: Real-time backend-as-a-service and database
+- **Convex Auth**: Authentication system
+- **Vercel**: Deployment platform
+
+### AI & ML Services
+- **OpenAI**: GPT models for analysis and chat
+- **Groq**: Fast inference for real-time chat and Arabic TTS/STT
+- **Anthropic Claude 3.5**: Alternative chatbot implementation
+- **Mistral**: OCR for PDF processing
+- **ElevenLabs**: Voice synthesis
+- **LiveKit**: Real-time video/audio communication infrastructure
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (version 18 or higher)
+- **pnpm** (recommended package manager)
+- **Git** for version control
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd smarter-ai
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env.local` file in the root directory and add the following environment variables:
+
+   ```env
+   # Required API Keys
+   OPENAI_API_KEY=your_openai_api_key
+   ANTHROPIC_API_KEY=your_anthropic_api_key
+   MISTRAL_API_KEY=your_mistral_api_key
+   GROQ_API_KEY=your_groq_api_key
+   
+   # Convex Backend
+   CONVEX_DEPLOYMENT=your_convex_deployment_url
+   
+   # Optional: ElevenLabs for voice synthesis
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key
+   
+   # Optional: LiveKit for real-time communication
+   LIVEKIT_API_KEY=your_livekit_api_key
+   LIVEKIT_API_SECRET=your_livekit_api_secret
+   ```
+
+4. **Set up Convex backend**
+   
+   If you haven't set up Convex yet:
+   ```bash
+   npx convex dev
+   ```
+   
+   Follow the prompts to create a new Convex project or connect to an existing one.
+
+5. **Initialize system prompts**
+   ```bash
+   pnpm run init-prompts
+   ```
+
+## 🚀 Running the Application
+
+### Development Mode
+
+Start the development server:
 
 ```bash
-pnpm install
+pnpm dev
 ```
 
-2. Then, start the development server:
+The application will be available at [http://localhost:3000](http://localhost:3000)
+
+### Production Build
+
+Build the application for production:
 
 ```bash
-pnpm run dev
+pnpm build
 ```
 
-3. Visit [http://localhost:3000](http://localhost:3000) in your browser to view
-   the template.
+Start the production server:
 
-## Notes
+```bash
+pnpm start
+```
 
-This project uses
-[`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to
-automatically optimize and load Inter, a custom Google Font.
+## 🧪 Testing the Application
 
-This project uses
-[`Tremor Raw`](https://raw.tremor.so/docs/getting-started/installation)
-components for the UI.
+### 1. Basic Functionality Test
 
-## License
+1. **Access the application**: Navigate to `http://localhost:3000`
+2. **Sign up/Login**: Create an account or use the admin credentials (see User Setup section)
+3. **Dashboard**: Verify the main dashboard loads with analytics components
 
-This site template is a commercial product and is licensed under the
-[Tremor License](https://blocks.tremor.so/license).
+### 2. CV Analysis Test
 
-## Learn more
+1. **Navigate to CV Analysis**: Go to the CV analysis section
+2. **Upload a PDF resume**: Test the PDF upload functionality
+3. **Verify analysis**: Check that the AI analysis returns structured candidate data
 
-For a deeper understanding of the technologies used in this template, check out
-the resources listed below:
+### 3. AI Interview Test
 
-- [Tremor Raw](https://raw.tremor.so) - Tremor Raw documentation
-- [Tailwind CSS](https://tailwindcss.com) - A utility-first CSS framework
-- [Next.js](https://nextjs.org/docs) - Next.js documentation
-- [Radix UI](https://www.radix-ui.com) - Radix UI Website
-- [Recharts](https://recharts.org) - Recharts documentation and website
-- [Tanstack](https://tanstack.com/table/latest) - TanStack table documentation
+1. **Create a job posting**: Add a new job with requirements
+2. **Start AI interview**: Test the real-time interview functionality
+3. **Voice interaction**: Test voice input/output if configured
+4. **Arabic support**: Test Arabic language interviews if applicable
+
+### 4. Claude Chatbot Test
+
+1. **Navigate to `/claude-chatbot`**
+2. **Test conversation**: Send messages to verify Claude integration
+3. **System prompts**: Test custom system prompt configuration
+
+### 5. API Endpoints Test
+
+Test the main API endpoints:
+
+```bash
+# Test CV analysis endpoint
+curl -X POST http://localhost:3000/api/analyze-cv \
+  -F "resume=@path/to/your/resume.pdf"
+
+# Test other API endpoints as needed
+```
+
+## 👥 User Setup
+
+### Setting Up Admin User
+
+1. **Add admin user to database**:
+   ```bash
+   npx convex run insertSampleData:insertAdminUser
+   ```
+
+2. **Complete signup**:
+   - Go to the signup page
+   - Use email: `alireda@teloshouse.com`
+   - Name: `Ali Reda`
+   - Password: `h1n1a1y1`
+   - Select "Administrator" role
+
+3. **Add sample data** (optional):
+   ```bash
+   npx convex run insertSampleData:insertSampleCandidates
+   npx convex run seedUsers:convertCandidatesToUsers
+   ```
+
+For detailed user setup instructions, see [SETUP_USERS.md](./SETUP_USERS.md)
+
+## 📝 Available Scripts
+
+```bash
+# Development
+pnpm dev                    # Start development server
+pnpm build                  # Build for production
+pnpm start                  # Start production server
+
+# Utilities
+pnpm cleanup                # Clean build artifacts
+pnpm init-prompts          # Initialize system prompts
+pnpm generate              # Generate sample data
+
+# Convex operations
+npx convex dev             # Start Convex development
+npx convex deploy          # Deploy Convex functions
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **Build failures**: 
+   - Ensure all environment variables are set
+   - Try `pnpm cleanup` then `pnpm build`
+
+2. **API key errors**:
+   - Verify all required API keys are in `.env.local`
+   - Check API key permissions and quotas
+
+3. **Convex connection issues**:
+   - Run `npx convex dev` to ensure backend is running
+   - Check `CONVEX_DEPLOYMENT` environment variable
+
+4. **PDF upload issues**:
+   - Verify Mistral API key is valid
+   - Check file size limits and format
+
+5. **Voice/Video issues**:
+   - Ensure LiveKit credentials are configured
+   - Check browser permissions for microphone/camera
+
+### Getting Help
+
+- Check the [Convex documentation](https://docs.convex.dev/)
+- Review [Next.js documentation](https://nextjs.org/docs)
+- Check individual AI service documentation for API issues
+
+## 📚 Key Features Documentation
 
 # CV Analysis API
 

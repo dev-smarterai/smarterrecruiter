@@ -51,3 +51,7 @@ next-env.d.ts
 /smarter ai/*.tsbuildinfo
 /smarter ai/next-env.d.ts
 /recruitmentagent/venv/
+
+.kiro/
+convex/_generated/
+package-lock.json
